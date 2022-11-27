@@ -9,7 +9,7 @@ image/building will be located in the place from where the function will start).
 You can create a regular image, a skin (with one layer) or a block (with one texture)
 
 Creating images:
-java -jar <program path> [options] <images> [-o <output files>]
+java -jar &lt;program path&gt; [options] &lt;images&gt; [-o <output files>]
 
 You can specify multiple images and multiple output files,
 each pair will be processed separately.
