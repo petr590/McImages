@@ -8,10 +8,12 @@ import mcimages.block.Block;
 import mcimages.color.Color;
 import mcimages.color.ColorUtils;
 
+/**
+ * Определяет реализацию конвертации из RGB в определённое пространство
+ */
 public enum Colorspace {
 	
 	RGB {
-		@Override
 		public Block getBlockForColor(int rgb1, List<Entry<Integer, Block>> blocks) {
 			int r1 = rgb1 >>> 16,
 				g1 = rgb1 >>> 8 & 0xFF,
@@ -46,7 +48,6 @@ public enum Colorspace {
 	
 	
 	XYZ {
-		@Override
 		public Block getBlockForColor(int rgb, List<Entry<Integer, Block>> blocks) {
 			return getBlockForColor(rgb, blocks, ColorUtils::rgb2xyz);
 		}
@@ -54,7 +55,6 @@ public enum Colorspace {
 	
 	
 	LAB {
-		@Override
 		public Block getBlockForColor(int rgb, List<Entry<Integer, Block>> blocks) {
 			return getBlockForColor(rgb, blocks, ColorUtils::rgb2lab);
 		}
@@ -62,7 +62,6 @@ public enum Colorspace {
 	
 	
 	YCbCr {
-		@Override
 		public Block getBlockForColor(int rgb, List<Entry<Integer, Block>> blocks) {
 			return getBlockForColor(rgb, blocks, ColorUtils::rgb2YCbCr);
 		}

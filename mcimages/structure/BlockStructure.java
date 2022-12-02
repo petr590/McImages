@@ -6,10 +6,10 @@ import java.io.OutputStreamWriter;
 import java.util.Map;
 
 import mcimages.Direction;
-import mcimages.DirectionalContext;
 import mcimages.block.Block;
+import mcimages.context.Context;
+import mcimages.context.DirectionalContext;
 import mcimages.AggregateDirection;
-import mcimages.Context;
 
 public class BlockStructure extends Structure {
 

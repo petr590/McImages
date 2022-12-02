@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mcimages.Direction;
-import mcimages.Context;
 import mcimages.Versions;
+import mcimages.context.Context;
 
 /**
  * Описывает блок. На один id может
@@ -19,7 +19,7 @@ public class Block {
 	
 	/** Версия, в которой был добавлен блок */
 	protected final int version;
-
+	
 	/** Кэш состояний блока */
 	private Map<Direction, String> states = new HashMap<>(6);
 	

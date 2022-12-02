@@ -1,6 +1,6 @@
 package mcimages.block;
 
-import mcimages.Context;
+import mcimages.context.Context;
 
 /**
  * Падающие блоки (песок, гравий и т.д.)
@@ -17,6 +17,7 @@ public class FallingBlock extends Block {
 	
 	@Override
 	public boolean canUse(Context context) {
-		return super.canUse(context) && context.getAggregateDirection().isHorisontal();
+		return super.canUse(context) && context.getAggregateDirection().isHorisontal()
+				&& !context.isOnSolid();
 	}
 }

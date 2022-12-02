@@ -1,7 +1,7 @@
 package mcimages.block;
 
 import mcimages.AggregateDirection;
-import mcimages.Context;
+import mcimages.context.Context;
 
 public class BottomBlock extends Block {
 

@@ -10,14 +10,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import mcimages.Context;
-import mcimages.DirectionalContext;
 import mcimages.McImages;
 import mcimages.block.Block;
+import mcimages.context.Context;
+import mcimages.context.DirectionalContext;
 import x590.util.Timer;
 
 public class ImageStructure extends Structure {
-
+	
 	public static final int MAX_REGION_SIZE = 32768;
 	public static final int CHUNK_WIDTH = 16;
 	
@@ -187,6 +187,13 @@ public class ImageStructure extends Structure {
 	}
 	
 	
+	private Map<Integer, String> paletteFromBlockPalette(Map<Integer, Block> blockPalette) {
+		return blockPalette.entrySet().stream()
+				.map(entry -> Map.entry(entry.getKey(), entry.getValue().getPlaceState(context.getDirection())))
+				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+	}
+	
+	
 	public ImageStructure(DirectionalContext context, BufferedImage image) {
 		this(context, image, 0, 0, 0);
 	}
@@ -255,11 +262,8 @@ public class ImageStructure extends Structure {
 		this.minRenderDistance = (endX + offsetRX + (CHUNK_WIDTH - 1)) / CHUNK_WIDTH;
 		
 		
-		Map<Integer, String> palette = blockPalette.entrySet().stream()
-				.map(entry -> Map.entry(entry.getKey(), entry.getValue().getPlaceState(context.getDirection())))
-				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-		
-		Map<Integer, String> lowerPalette = null; // TODO
+		Map<Integer, String> palette = paletteFromBlockPalette(blockPalette);
+		Map<Integer, String> lowerPalette = lowerBlockPalette == blockPalette ? palette : paletteFromBlockPalette(lowerBlockPalette);
 		
 		
 		Timer timer = Timer.startNewTimer();
@@ -359,16 +363,16 @@ public class ImageStructure extends Structure {
 			// Локальные переменные для кэширования полей
 			var data = this.data = new String[width][height + 1]; // Один дополнительный элемент, который будет равен null
 			
-			int widthM1 = width - 1;
+			int heightM1 = height - 1;
 			
-			for(int x = 0, imgX = startX; x < widthM1; x++, imgX++) {
-				for(int y = 0, imgY = startY; y < height; y++, imgY++) {
+			for(int x = 0, imgX = startX; x < width; x++, imgX++) {
+				for(int y = 0, imgY = startY; y < heightM1; y++, imgY++) {
 					setDataBlock(image, palette, data, x, y, imgX, imgY);
 				}
 			}
 			
-			for(int y = 0, imgY = startY; y < height; y++, imgY++) {
-				setDataBlock(image, lowerPalette, data, widthM1, y, startX + widthM1, imgY);
+			for(int x = 0, imgX = startX, lastY = startY + heightM1; x < width; x++, imgX++) {
+				setDataBlock(image, lowerPalette, data, x, heightM1, imgX, lastY);
 			}
 		}
 		

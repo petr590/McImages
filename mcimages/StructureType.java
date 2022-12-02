@@ -2,11 +2,15 @@ package mcimages;
 
 import java.awt.image.BufferedImage;
 
+import mcimages.context.DirectionalContext;
 import mcimages.structure.BlockStructure;
 import mcimages.structure.ImageStructure;
 import mcimages.structure.SkinStructure;
 import mcimages.structure.Structure;
 
+/**
+ * Тип структуры - изображение, блок или скин 
+ */
 public enum StructureType {
 
 	IMAGE {

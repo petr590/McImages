@@ -2,7 +2,7 @@ package mcimages.block;
 
 import java.util.function.Predicate;
 
-import mcimages.Context;
+import mcimages.context.Context;
 
 public class IceBlock extends ConditionalBlock {
 	

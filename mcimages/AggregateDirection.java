@@ -1,7 +1,7 @@
 package mcimages;
 
 /**
- * Общее направление
+ * Общее направление - вверх, вниз или по горизонтали
  */
 public enum AggregateDirection {
 	HORISONTAL, UP, DOWN;

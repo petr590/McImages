@@ -1,6 +1,6 @@
 package mcimages.block;
 
-import mcimages.Context;
+import mcimages.context.Context;
 
 public class SideBlock extends Block {
 
