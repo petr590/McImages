@@ -14,6 +14,7 @@ import mcimages.McImages;
 import mcimages.block.Block;
 import mcimages.context.Context;
 import mcimages.context.DirectionalContext;
+
 import x590.util.Timer;
 
 public class ImageStructure extends Structure {

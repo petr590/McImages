@@ -23,14 +23,6 @@ import java.util.zip.ZipOutputStream;
 
 import javax.imageio.ImageIO;
 
-import argparser.ArgsNamespace;
-import argparser.ArgumentParseException;
-import argparser.Flag;
-import argparser.StandartArgParser;
-import argparser.Times;
-import argparser.option.EnumOption;
-import argparser.option.IntOption;
-import argparser.option.StringOption;
 import mcimages.block.Block;
 import mcimages.block.BlockInside;
 import mcimages.block.BottomBlock;
@@ -47,9 +39,18 @@ import mcimages.context.Context;
 import mcimages.context.DirectionalContext;
 import mcimages.structure.Colorspace;
 import mcimages.structure.Structure;
+import mcimages.util.Util;
 import mcimages.structure.SkinStructure;
+
+import x590.argparser.ArgsNamespace;
+import x590.argparser.ArgumentParseException;
+import x590.argparser.Flag;
+import x590.argparser.StandartArgParser;
+import x590.argparser.Times;
+import x590.argparser.option.EnumOption;
+import x590.argparser.option.IntOption;
+import x590.argparser.option.StringOption;
 import x590.util.Timer;
-import x590.util.Util;
 
 import static mcimages.Versions.*;
 
@@ -414,7 +415,7 @@ public class McImages {
 						
 					}).help("Minecraft version. By default is 1.18.2"))
 				
-				.add(new EnumOption<Direction>(Direction.class, "-d", "--direction").help("Direction of building. Default is north")
+				.add(new EnumOption<>(Direction.class, "-d", "--direction").help("Direction of building. Default is north")
 						.defaultValue(Direction.NORTH))
 				
 				.add(new Flag("-i", "--image").help("Generate image structure").action(namespace -> structureType = StructureType.IMAGE))

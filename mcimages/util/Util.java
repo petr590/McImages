@@ -1,4 +1,4 @@
-package x590.util;
+package mcimages.util;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 import java.util.Scanner;
 
 public class Util {
+	
+	private Util() {}
 	
 	
 	public static boolean askUser(String message) {

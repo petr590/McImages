@@ -1,6 +1,7 @@
 package mcimages;
 
 import java.awt.image.BufferedImage;
+import java.util.function.BiFunction;
 
 import mcimages.context.DirectionalContext;
 import mcimages.structure.BlockStructure;
@@ -12,24 +13,17 @@ import mcimages.structure.Structure;
  * Тип структуры - изображение, блок или скин 
  */
 public enum StructureType {
-
-	IMAGE {
-		public Structure createStructure(DirectionalContext context, BufferedImage image) {
-			return new ImageStructure(context, image);
-		}
-	},
+	IMAGE(ImageStructure::new),
+	BLOCK(BlockStructure::new),
+	SKIN(SkinStructure::new);
 	
-	BLOCK {
-		public Structure createStructure(DirectionalContext context, BufferedImage image) {
-			return new BlockStructure(context, image);
-		}
-	},
+	private final BiFunction<DirectionalContext, BufferedImage, Structure> structureCreator;
 	
-	SKIN {
-		public Structure createStructure(DirectionalContext context, BufferedImage image) {
-			return new SkinStructure(context, image);
-		}
-	};
+	private StructureType(BiFunction<DirectionalContext, BufferedImage, Structure> structureCreator) {
+		this.structureCreator = structureCreator;
+	}
 	
-	public abstract Structure createStructure(DirectionalContext context, BufferedImage image);
+	public Structure createStructure(DirectionalContext context, BufferedImage image) {
+		return structureCreator.apply(context, image);
+	}
 }

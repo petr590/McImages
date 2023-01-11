@@ -2,6 +2,15 @@ package mcimages.color;
 
 public class ColorUtils {
 	
+	private ColorUtils() {}
+	
+	
+	public static final double
+			R_CF = 0.299,
+			G_CF = 0.587,
+			B_CF = 0.114;
+	
+	
 	public static XYZ rgb2xyz(int rgb) {
 		double  r = (rgb >>> 16)       / 255.0,
 				g = (rgb >>> 8 & 0xFF) / 255.0,

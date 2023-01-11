@@ -7,75 +7,61 @@ import java.util.function.IntFunction;
 import mcimages.block.Block;
 import mcimages.color.Color;
 import mcimages.color.ColorUtils;
+import x590.util.function.ObjIntFunction;
+
+import static mcimages.color.ColorUtils.*;
 
 /**
  * Определяет реализацию конвертации из RGB в определённое пространство
  */
 public enum Colorspace {
 	
-	RGB {
-		public Block getBlockForColor(int rgb1, List<Entry<Integer, Block>> blocks) {
-			int r1 = rgb1 >>> 16,
-				g1 = rgb1 >>> 8 & 0xFF,
-				b1 = rgb1 & 0xFF;
+	RGB((blocks, rgb1) -> {
+		int r1 = rgb1 >>> 16,
+			g1 = rgb1 >>> 8 & 0xFF,
+			b1 = rgb1 & 0xFF;
+		
+		double minDiff = Double.MAX_VALUE;
+		Block nearestBlock = null;
+		
+		for(Entry<Integer, Block> entry : blocks) {
+			int rgb2 = entry.getKey();
+			Block block = entry.getValue();
 			
-			double minDiff = Double.MAX_VALUE;
-			Block nearestBlock = null;
-			
-			for(Entry<Integer, Block> entry : blocks) {
-				int rgb2 = entry.getKey();
-				Block block = entry.getValue();
-				
-				if(rgb1 == rgb2) {
-					return block;
-				}
-				
-				int r = (rgb2 >>> 16)       - r1,
-					g = (rgb2 >>> 8 & 0xFF) - g1,
-					b = (rgb2 & 0xFF)       - b1;
-				
-				double diff = Math.sqrt(r * r * (R_CF * R_CF) + g * g * (G_CF * G_CF) + b * b * (B_CF * B_CF));
-				
-				if(diff < minDiff) {
-					minDiff = diff;
-					nearestBlock = block;
-				}
+			if(rgb1 == rgb2) {
+				return block;
 			}
 			
-			return nearestBlock;
+			int r = (rgb2 >>> 16)       - r1,
+				g = (rgb2 >>> 8 & 0xFF) - g1,
+				b = (rgb2 & 0xFF)       - b1;
+			
+			double diff = Math.sqrt(r * r * (R_CF * R_CF) + g * g * (G_CF * G_CF) + b * b * (B_CF * B_CF));
+			
+			if(diff < minDiff) {
+				minDiff = diff;
+				nearestBlock = block;
+			}
 		}
-	},
+		
+		return nearestBlock;
+	}),
 	
+	XYZ(  (blocks, rgb) -> getBlockForColor(blocks, rgb, ColorUtils::rgb2xyz)),
+	LAB(  (blocks, rgb) -> getBlockForColor(blocks, rgb, ColorUtils::rgb2lab)),
+	YCbCr((blocks, rgb) -> getBlockForColor(blocks, rgb, ColorUtils::rgb2YCbCr));
 	
-	XYZ {
-		public Block getBlockForColor(int rgb, List<Entry<Integer, Block>> blocks) {
-			return getBlockForColor(rgb, blocks, ColorUtils::rgb2xyz);
-		}
-	},
+	private final ObjIntFunction<List<Entry<Integer, Block>>, Block> blockColorGetter;
 	
+	private Colorspace(ObjIntFunction<List<Entry<Integer, Block>>, Block> blockColorGetter) {
+		this.blockColorGetter = blockColorGetter;
+	}
 	
-	LAB {
-		public Block getBlockForColor(int rgb, List<Entry<Integer, Block>> blocks) {
-			return getBlockForColor(rgb, blocks, ColorUtils::rgb2lab);
-		}
-	},
+	public Block getBlockForColor(int rgb, List<Entry<Integer, Block>> blocks) {
+		return blockColorGetter.apply(blocks, rgb);
+	}
 	
-	
-	YCbCr {
-		public Block getBlockForColor(int rgb, List<Entry<Integer, Block>> blocks) {
-			return getBlockForColor(rgb, blocks, ColorUtils::rgb2YCbCr);
-		}
-	};
-	
-	public static final double
-			R_CF = 0.299,
-			G_CF = 0.587,
-			B_CF = 0.114;
-	
-	public abstract Block getBlockForColor(int rgb, List<Entry<Integer, Block>> blocks);
-	
-	
-	private static Block getBlockForColor(int rgb1, List<Entry<Integer, Block>> blocks, IntFunction<? extends Color> colorConverter) {
+	private static Block getBlockForColor(List<Entry<Integer, Block>> blocks, int rgb1, IntFunction<? extends Color> colorConverter) {
 		Color color1 = colorConverter.apply(rgb1);
 		double  a1 = color1.a,
 				b1 = color1.b,

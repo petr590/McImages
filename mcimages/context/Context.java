@@ -8,7 +8,7 @@ import mcimages.structure.Colorspace;
 public abstract class Context {
 	
 	private final Colorspace colorspace;
-	protected final StructureType structureType;
+	private final StructureType structureType;
 	
 	private final int mcVersion;
 	private boolean isOnSolid;

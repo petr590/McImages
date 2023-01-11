@@ -2,11 +2,12 @@ package mcimages.context;
 
 import java.awt.image.BufferedImage;
 
-import argparser.ArgsNamespace;
 import mcimages.AggregateDirection;
 import mcimages.Direction;
 import mcimages.StructureType;
 import mcimages.structure.Structure;
+
+import x590.argparser.ArgsNamespace;
 
 public class DirectionalContext extends Context {
 	
@@ -43,6 +44,6 @@ public class DirectionalContext extends Context {
 	
 	
 	public Structure createStructure(BufferedImage image) {
-		return structureType.createStructure(this, image);
+		return getStructureType().createStructure(this, image);
 	}
 }
